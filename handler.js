@@ -1,27 +1,34 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const child_process = require('child_process');
-const stream = require('stream');
-
+const QRCode = require('qrcode')
+const shortid = require('shortid');
 const s3 = new AWS.S3();
 
 module.exports.create = (event, context, callback) => {
-  var uuid = event.pathParameters.uuid;
+  const uuid = event.pathParameters.uuid;
   if (!uuid) {
     return callback(new Error(`Please include the string in the request.`));
   }
 
-  const key = uuid + ".pdf";
-  const bucket = process.env.bucketName;
+  const qrcodeOriginData = QRCode.create('hello.png', 'Some text', {
+    color: {
+      dark: '#00F',  // Blue dots
+      light: '#0000' // Transparent background
+    }
+  }, function (err) {
+    if (err) throw err;
+    console.log('done')
+  });
 
-
+  const buffer = qrcodeOriginData.modules.data;
+  const key = shortid.generate();
   const params = {
-    Bucket: bucket,
+    Bucket: process.env.bucketName,
     Key: key,
     ACL: 'public-read-write',
-    Body: body,
-    ContentType: 'application/pdf'
+    Body: buffer,
+    ContentType: 'image/png'
   };
 
   s3.putObject(params, function (err, data) {
@@ -32,7 +39,7 @@ module.exports.create = (event, context, callback) => {
     const response = {
       statusCode: 302,
       headers: {
-        location: `https://s3-eu-west-1.amazonaws.com/${bucket}/${key}`
+        location: `https://s3.amazonaws.com/${process.env.bucketName}/${key}`
       }
     };
 

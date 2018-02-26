@@ -20,8 +20,8 @@ provider:
         - "arn:aws:s3:::${self:custom.qrcodeBucket}/*"
 
 functions:
-  get:
-    handler: handler.get
+  create:
+    handler: handler.create
     events:
       - http:
           path: /{uuid}
