@@ -17,7 +17,7 @@ module.exports.create = (event, context, callback) => {
     const params = {
       Bucket: process.env.bucketName,
       Key: key,
-      ACL: 'public-read-write',
+      ACL: 'public-read',
       Body: url,
       ContentEncoding: 'base64',
       ContentType: 'image/png'
