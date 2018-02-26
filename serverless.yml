@@ -20,18 +20,18 @@ provider:
         - "arn:aws:s3:::${self:custom.qrcodeBucket}/*"
 
 functions:
-  get:
+  create:
     handler: handler.create
     events:
       - http:
-          path: /{gameid}
+          path: /
           method: post
           timeout: 15
   get:
     handler: handler.get
     events:
       - http:
-          path: /{gameid}
+          path: /{uuid}
           method: get
           timeout: 15
 
