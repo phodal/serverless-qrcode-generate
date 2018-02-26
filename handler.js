@@ -12,7 +12,15 @@ module.exports.create = (event, context, callback) => {
   }
 
   const key = shortid.generate();
-  QRCode.toDataURL(uuid, { errorCorrectionLevel: 'H' }, function (err, url) {
+  QRCode.toDataURL(uuid, {
+    errorCorrectionLevel: 'H',
+    width: 512,
+    margin: 2,
+    color: {
+      light: '#fdfdfd',
+      dark: '#384452'
+    }
+  }, function (err, url) {
     console.log(url)
     const params = {
       Bucket: process.env.bucketName,
