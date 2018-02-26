@@ -1,5 +1,11 @@
 var QRCode = require('qrcode')
 
-QRCode.toDataURL('I am a pony!', function (err, url) {
-    console.log(url)
+QRCode.toFile('hello.png', 'Some text', {
+  color: {
+    dark: '#00F',  // Blue dots
+    light: '#0000' // Transparent background
+  }
+}, function (err) {
+  if (err) throw err
+  console.log('done')
 })

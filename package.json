@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "qrcode": "^1.2.0"
+    "qrcode": "^1.2.0",
+    "shortid": "^2.2.8"
   }
 }
