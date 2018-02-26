@@ -18,7 +18,7 @@ module.exports.create = (event, context, callback) => {
       Bucket: process.env.bucketName,
       Key: key,
       ACL: 'public-read',
-      Body: url,
+      Body: new Buffer(url.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
       ContentEncoding: 'base64',
       ContentType: 'image/png'
     };
