@@ -11,38 +11,31 @@ module.exports.create = (event, context, callback) => {
     return callback(new Error(`Please include the string in the request.`));
   }
 
-  const qrcodeOriginData = QRCode.create('hello.png', 'Some text', {
-    color: {
-      dark: '#00F',  // Blue dots
-      light: '#0000' // Transparent background
-    }
-  }, function (err) {
-    if (err) throw err;
-    console.log('done')
-  });
-
-  const buffer = qrcodeOriginData.modules.data;
   const key = shortid.generate();
-  const params = {
-    Bucket: process.env.bucketName,
-    Key: key,
-    ACL: 'public-read-write',
-    Body: buffer,
-    ContentType: 'image/png'
-  };
-
-  s3.putObject(params, function (err, data) {
-    if (err) {
-      return callback(new Error(`Failed to put s3 object: ${err}`));
-    }
-
-    const response = {
-      statusCode: 302,
-      headers: {
-        location: `https://s3.amazonaws.com/${process.env.bucketName}/${key}`
-      }
+  QRCode.toDataURL(uuid, { errorCorrectionLevel: 'H' }, function (err, url) {
+    console.log(url)
+    const params = {
+      Bucket: process.env.bucketName,
+      Key: key,
+      ACL: 'public-read-write',
+      Body: url,
+      ContentEncoding: 'base64',
+      ContentType: 'image/png'
     };
 
-    return callback(null, response);
+    s3.putObject(params, function (err, data) {
+      if (err) {
+        return callback(new Error(`Failed to put s3 object: ${err}`));
+      }
+
+      const response = {
+        statusCode: 302,
+        headers: {
+          location: `https://s3.amazonaws.com/${process.env.bucketName}/${key}`
+        }
+      };
+
+      return callback(null, response);
+    })
   });
 };
