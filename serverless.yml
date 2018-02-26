@@ -1,10 +1,48 @@
 service: qrcode
 
+custom:
+  # change this, so it's unique for your setup
+  qrcodeBucket: ${self:service}.${self:provider.stage,opt:stage}
+  stageVariables:
+    bucketName: ${self:custom.qrcodeBucket}
+
 provider:
   name: aws
   runtime: nodejs6.10
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+      Resource:
+        - "arn:aws:s3:::${self:custom.qrcodeBucket}"
+        - "arn:aws:s3:::${self:custom.qrcodeBucket}/*"
 
 functions:
-  hello:
-    handler: handler.hello
+  get:
+    handler: handler.create
+    events:
+      - http:
+          path: /{gameid}
+          method: post
+          timeout: 15
+  get:
+    handler: handler.get
+    events:
+      - http:
+          path: /{gameid}
+          method: get
+          timeout: 15
 
+resources:
+  Resources:
+    PackageStorage:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.qrcodeBucket}
+        LifecycleConfiguration:
+          Rules:
+            - ExpirationInDays: 1
+              Status: Enabled
