@@ -1,10 +1,18 @@
 service: qrcode
 
+plugins:
+  - serverless-domain-manager
+
 custom:
   # change this, so it's unique for your setup
   qrcodeBucket: ${self:service}.${self:provider.stage,opt:stage}
   stageVariables:
     bucketName: ${self:custom.qrcodeBucket}
+  customDomain:
+    domainName: qrcode.pho.im
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
 
 provider:
   name: aws
