@@ -7,6 +7,7 @@ const s3 = new AWS.S3();
 
 module.exports.create = (event, context, callback) => {
   const uuid = event.pathParameters.uuid;
+  console.log(event.queryStringParameters, event.queryStringParameters.s)
   if (!uuid) {
     return callback(new Error(`Please include the string in the request.`));
   }
