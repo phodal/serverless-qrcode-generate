@@ -2,6 +2,11 @@
 
 > A Serverless QRCode Generator
 
+Demo:
+
+URL: https://qrcode.pho.im/?q={string}
+
+Examples: [https://qrcode.pho.im/?q=http://weixin.qq.com/r/mnVYQHrEVicprT4j9yCI](https://qrcode.pho.im/?q=http://weixin.qq.com/r/mnVYQHrEVicprT4j9yCI)
 
 Setup
 ---
