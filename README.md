@@ -8,6 +8,8 @@ URL: https://qrcode.pho.im/?q={string}
 
 Examples: [https://qrcode.pho.im/?q=http://weixin.qq.com/r/mnVYQHrEVicprT4j9yCI](https://qrcode.pho.im/?q=http://weixin.qq.com/r/mnVYQHrEVicprT4j9yCI)
 
+[Short URL](https://github.com/phodal/shorter): [https://x.pho.im/Z5t7](https://x.pho.im/Z5t7)
+
 Setup
 ---
 
