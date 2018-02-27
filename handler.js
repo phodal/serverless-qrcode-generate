@@ -6,14 +6,13 @@ const shortid = require('shortid');
 const s3 = new AWS.S3();
 
 module.exports.create = (event, context, callback) => {
-  const uuid = event.pathParameters.uuid;
-  console.log(event.queryStringParameters, event.queryStringParameters.s)
-  if (!uuid) {
+  let string = event.queryStringParameters.q;
+  if (!string) {
     return callback(new Error(`Please include the string in the request.`));
   }
 
   const key = shortid.generate();
-  QRCode.toDataURL(uuid, {
+  QRCode.toDataURL(string, {
     errorCorrectionLevel: 'H',
     width: 512,
     margin: 2,
@@ -22,7 +21,6 @@ module.exports.create = (event, context, callback) => {
       dark: '#384452'
     }
   }, function (err, url) {
-    console.log(url)
     const params = {
       Bucket: process.env.bucketName,
       Key: key,

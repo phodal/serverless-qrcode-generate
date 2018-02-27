@@ -24,7 +24,7 @@ functions:
     handler: handler.create
     events:
       - http:
-          path: /{uuid}
+          path: /
           method: get
           timeout: 15
     environment:
